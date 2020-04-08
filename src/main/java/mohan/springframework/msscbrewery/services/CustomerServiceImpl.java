@@ -17,12 +17,12 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public void deleteByCustomerId(Long customerId) {
+    public void deleteByCustomerId(UUID customerId) {
 
     }
 
     @Override
-    public void updateCustomer(Long customerId, CustomerDto customerDto) {
+    public void updateCustomer(UUID customerId, CustomerDto customerDto) {
 
     }
 }

@@ -24,7 +24,7 @@ public class BeerController {
 
     @GetMapping({"/{beerId}"})
     public ResponseEntity<BeerDto> getBeer(@PathVariable("beerId") UUID beerId){
-
+        System.out.println("Inside Remote service-- Producer");
         return new ResponseEntity<>(beerService.getBeerById(beerId), HttpStatus.OK);
     }
 
@@ -34,6 +34,7 @@ public class BeerController {
         BeerDto bt = beerService.saveNewBeer(beerDto);
         HttpHeaders headers = new HttpHeaders();
         //TOdo URL
+        System.out.println("Save Producer>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
         headers.add("Location","http://localhost:8080/api/v1/beer/"+bt.getId());
      //   headers.add("Content-Type", "application/json;charset=UTF-8");
         return new  ResponseEntity(headers,HttpStatus.CREATED);
@@ -41,14 +42,18 @@ public class BeerController {
     }
 
     @PutMapping({"/{beerId}"})
-    public  ResponseEntity handleUpdate(@RequestBody BeerDto beerDto,Long beerId){
+    public  ResponseEntity handleUpdate(@RequestBody BeerDto beerDto, @PathVariable UUID beerId){
         beerService.updateBeer(beerDto, beerId);
+        System.out.println(beerId +  "  Update Producer>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> "+beerDto);
         return new  ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping({"/{beerId}"})
-    public  ResponseEntity deleteById(Long beerId){
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public  void deleteById(@PathVariable UUID beerId){
+        System.out.println(beerId +  "  Delete Producer>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> "+beerId);
         beerService.deleteById(beerId);
-        return new  ResponseEntity(HttpStatus.NO_CONTENT);
+
+        //return new  ResponseEntity(HttpStatus.NO_CONTENT);
     }
 }

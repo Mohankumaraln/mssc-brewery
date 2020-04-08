@@ -24,12 +24,12 @@ public class BeerServiceImpl implements BeerService {
     }
 
     @Override
-    public void updateBeer(BeerDto beerDto, Long beerId) {
+    public void updateBeer(BeerDto beerDto, UUID beerId) {
         System.out.println("UPDATE CALLED");
     }
 
     @Override
-    public void deleteById(Long beerId) {
+    public void deleteById(UUID beerId) {
 
     }
 
