@@ -7,6 +7,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.ConstraintViolationException;
+import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @RequestMapping("/api/v1/customer")
@@ -19,13 +23,13 @@ public class CustomerController {
         this.customerService = customerService;
     }
     @GetMapping({"/{customerId}"})
-    public ResponseEntity<CustomerDto> getCustomer(@PathVariable("customerId") UUID beerId) {
+    public ResponseEntity<CustomerDto> getCustomer(@Valid @PathVariable("customerId") UUID beerId) {
 
         return new ResponseEntity<>(customerService.getCustomerById(beerId), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity handlePost(@RequestBody CustomerDto customerDto) {
+    public ResponseEntity handlePost(@Valid @RequestBody CustomerDto customerDto) {
         CustomerDto dt = customerService.saveNewCustomer(customerDto);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Location", "http://localhost:8080/api/v1/customer/" + dt.getId());
@@ -33,16 +37,17 @@ public class CustomerController {
     }
 
     @PutMapping({"/{customerId}"})
-    public ResponseEntity handleUpdate(@PathVariable UUID customerId, @RequestBody CustomerDto customerDto) {
+    public ResponseEntity handleUpdate(@Valid @PathVariable("customerId") UUID customerId, @RequestBody CustomerDto customerDto) {
         customerService.updateCustomer(customerId, customerDto);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping({"/{customerId}"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteById(@PathVariable UUID customerId) {
+    public void deleteById(@Valid @PathVariable("customerId") UUID customerId) {
         System.out.println("INSIDE CUSTOMER DELETE "+customerId);
         customerService.deleteByCustomerId(customerId);
        // return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
+
 }

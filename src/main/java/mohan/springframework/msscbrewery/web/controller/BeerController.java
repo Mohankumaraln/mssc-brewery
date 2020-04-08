@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.UUID;
 
 /**
@@ -23,13 +24,13 @@ public class BeerController {
     }
 
     @GetMapping({"/{beerId}"})
-    public ResponseEntity<BeerDto> getBeer(@PathVariable("beerId") UUID beerId){
+    public ResponseEntity<BeerDto> getBeer(@Valid  @PathVariable("beerId") UUID beerId){
         System.out.println("Inside Remote service-- Producer");
         return new ResponseEntity<>(beerService.getBeerById(beerId), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity handlePost(@RequestBody BeerDto beerDto){
+    public ResponseEntity handlePost(@Valid @RequestBody BeerDto beerDto){
 
         BeerDto bt = beerService.saveNewBeer(beerDto);
         HttpHeaders headers = new HttpHeaders();
@@ -42,7 +43,7 @@ public class BeerController {
     }
 
     @PutMapping({"/{beerId}"})
-    public  ResponseEntity handleUpdate(@RequestBody BeerDto beerDto, @PathVariable UUID beerId){
+    public  ResponseEntity handleUpdate(@Valid @RequestBody BeerDto beerDto, @PathVariable("beerId") UUID beerId){
         beerService.updateBeer(beerDto, beerId);
         System.out.println(beerId +  "  Update Producer>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> "+beerDto);
         return new  ResponseEntity(HttpStatus.NO_CONTENT);
